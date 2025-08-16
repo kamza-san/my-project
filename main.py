@@ -14,6 +14,7 @@ pygame.init()
 #Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함
 #이곳에서 실행
 #ㅁㅇㄹㅁㄴㄹㅇ
+#ㅊㄹㄹㄹㄹㄹㄹㄹ
 FPS = 60
 MAX_WIDTH = 600
 MAX_HEIGHT = 800
