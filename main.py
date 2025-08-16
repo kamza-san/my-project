@@ -34,7 +34,7 @@ if __name__ == "__main__":
             level = level_set(clock,screen,FPS,MYFONT)
             answer = "title"
         elif answer == "make":
-            answer = make(clock,screen,FPS,MYFONT)
+            answer = make(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
         elif answer == "ranking":
             answer = ranking(clock,screen,FPS,MYFONT)
         elif answer == "enter":

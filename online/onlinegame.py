@@ -4,6 +4,7 @@ import threading
 import sys
 import time
 import random
+import socket
 from pygame.locals import *
 from offline.player import Player
 from offline.object import Object
@@ -26,11 +27,9 @@ def receive_messages(sock):
         except:
             break
 
-import socket
-import sys
 
 def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
-    host = "192.168.10.22"
+    host = "192.168.10.25"
     port = 20002
     
     global client
