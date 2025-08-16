@@ -179,6 +179,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         scoreboard.text = str(score)+"cm"
         for obj in objects:
             obj.draw()
+        enemy.draw()
         player.draw()
         lava.draw()
         scoreboard.draw()
