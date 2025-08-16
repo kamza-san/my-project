@@ -7,7 +7,6 @@ from online.online import online
 from offline.level_setting import level_set
 from online.make import make
 from offline.ranking import ranking
-from online.host import server
 from online.onlinegame import enter
 
 pygame.init()

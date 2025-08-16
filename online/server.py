@@ -27,8 +27,9 @@ def broadcast(msg, sender_socket):
             except:
                 pass
 
-def server(port):
+def main():
     host = '0.0.0.0'
+    port = 5555
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
@@ -41,3 +42,6 @@ def server(port):
         clients.append(client_socket)
         thread = threading.Thread(target=handle_client, args=(client_socket, addr))
         thread.start()
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,7 @@
 import pygame
 import sys
 from offline.button import Button
-from image import button,title_photo
+from image import button,title_photo,quit_button1
 from offline.textbox import Textbox
 import json
 
@@ -12,7 +12,7 @@ def ranking(clock,screen,FPS,MYFONT):
     hard = Button(200,420,200,80,button,"hard:0",MYFONT1,0,0,0,screen)
     normal = Button(200,540,200,80,button,"normal:0",MYFONT1,0,0,0,screen)
     easy = Button(200,660,200,80,button,"easy:0",MYFONT1,0,0,0,screen)
-    quit = Button(410,300,200,80,button,"quit",MYFONT,0,0,0,screen)
+    quit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
     def drawing():
         name.draw()

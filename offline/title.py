@@ -2,16 +2,16 @@ import pygame
 import sys
 from offline.button import Button
 from offline.textbox import Textbox
-from image import button,title_photo
+from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
 import threading
 
 def title(clock,screen,FPS,MYFONT,level):
     gamestart = Button(200,300,200,80,button,"offline",MYFONT,0,0,0,screen)
-    gameonline = Button(200,420,200,80,button,"online",MYFONT,0,0,0,screen)
-    setting = Button(200,540,200,80,button,"setting",MYFONT,0,0,0,screen)
-    gamequit = Button(200,660,200,80,button,"game quit",MYFONT,0,0,0,screen)
-    level_setting = Button(410,300,200,80,button,level,MYFONT,0,0,0,screen)
-    rank = Button(410,420,200,80,button,"rank",MYFONT,0,0,0,screen)
+    gameonline = Button(200,540,200,80,button,"online",MYFONT,0,0,0,screen)
+    setting = Button(20,700,80,80,setting_button1,"",MYFONT,0,0,0,screen)
+    gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
+    level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
+    rank = Button(200,660,200,80,button,"rank",MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()
@@ -42,4 +42,22 @@ def title(clock,screen,FPS,MYFONT,level):
                     return "level_settting"
                 elif rank.click(pygame.mouse.get_pos()):
                     return "ranking"
+        gamestart.image = button
+        gameonline.image = button
+        setting.image = setting_button1
+        gamequit.image = quit_button1
+        level_setting.image = button
+        rank.image = button
+        if gamestart.click(pygame.mouse.get_pos()):
+            gamestart.image = button2
+        elif gameonline.click(pygame.mouse.get_pos()):
+            gameonline.image = button2
+        elif setting.click(pygame.mouse.get_pos()):
+            setting.image = setting_button2
+        elif gamequit.click(pygame.mouse.get_pos()):
+            gamequit.image = quit_button2
+        elif level_setting.click(pygame.mouse.get_pos()):
+            level_setting.image = button2
+        elif rank.click(pygame.mouse.get_pos()):
+            rank.image = button2
         drawing()

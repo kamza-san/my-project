@@ -14,8 +14,10 @@ class Textbox:
         self.green = green
         self.blue = blue
     def draw(self):
-        self.screen.blit(self.image,(self.x-20,self.y-25))
-        return self.screen.blit(self.font.render(str(self.text), True, (self.red,self.green,self.blue)),(self.x,self.y))
+        self.screen.blit(self.image,(self.x,self.y))
+        text_surface = self.font.render(str(self.text), True, (self.red, self.green, self.blue))
+        text_rect = text_surface.get_rect(center=(self.x + self.si_x // 2, self.y + self.si_y // 2))
+        self.screen.blit(text_surface, text_rect)
     def click(self,mouse):
         if self.x <= mouse[0] and mouse[0] <= (self.x + self.si_x) :
             if self.y <= mouse[1] and mouse[1] <= (self.y + self.si_y) :

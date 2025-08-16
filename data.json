@@ -17,7 +17,7 @@
     "maker": {
         "easy": 51179,
         "normal": 13674,
-        "hard": 0
+        "hard": 9964
     },
     "cho": {
         "easy": 1257,
@@ -28,5 +28,10 @@
         "easy": 0,
         "normal": 0,
         "hard": -20
+    },
+    "1111": {
+        "easy": 0,
+        "normal": -11,
+        "hard": 0
     }
 }
