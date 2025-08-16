@@ -164,7 +164,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 score += a     
                 break
         player.move(pressed_keys,right,left)
-        lava.up(speed)
+        #lava.up(speed)
         if player.get_rect().colliderect(lava.get_rect()):
             print("닿음;;")
         if len(objects) != 0:
