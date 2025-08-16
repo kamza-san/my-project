@@ -6,15 +6,13 @@ from image import button,title_photo
 import threading
 
 def title(clock,screen,FPS,MYFONT,level):
-    gamestart = Button(200,300,200,80,button,"game start",MYFONT,0,0,0,screen)
-    gameonline = Button(200,420,200,80,button,"game online",MYFONT,0,0,0,screen)
+    gamestart = Button(200,300,200,80,button,"offline",MYFONT,0,0,0,screen)
+    gameonline = Button(200,420,200,80,button,"online",MYFONT,0,0,0,screen)
     setting = Button(200,540,200,80,button,"setting",MYFONT,0,0,0,screen)
     gamequit = Button(200,660,200,80,button,"game quit",MYFONT,0,0,0,screen)
     level_setting = Button(410,300,200,80,button,level,MYFONT,0,0,0,screen)
     rank = Button(410,420,200,80,button,"rank",MYFONT,0,0,0,screen)
-    text = Textbox(410,540,200,80,button,"",MYFONT,0,0,0,screen)
     def drawing():
-        text.draw()
         gamestart.draw()
         gameonline.draw()
         setting.draw()
@@ -44,15 +42,4 @@ def title(clock,screen,FPS,MYFONT,level):
                     return "level_settting"
                 elif rank.click(pygame.mouse.get_pos()):
                     return "ranking"
-                elif text.click(pygame.mouse.get_pos()):
-                    while True:
-                        result = text.input()
-                        if result == "end":
-                            break
-                        if result == "del":
-                            text.text = text.text[:-1]
-                        else:
-                            text.text += result
-                        drawing()
         drawing()
-        #thread1 = threading.Thread(target=drawing())

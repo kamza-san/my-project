@@ -15,7 +15,7 @@
         "hard": 0
     },
     "maker": {
-        "easy": 0,
+        "easy": 51179,
         "normal": 13674,
         "hard": 0
     },
@@ -24,9 +24,9 @@
         "normal": 0,
         "hard": 0
     },
-    "sdfs": {
+    "under": {
         "easy": 0,
-        "normal": -1,
-        "hard": 0
+        "normal": 0,
+        "hard": -20
     }
 }

@@ -167,7 +167,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                         if event.type == pygame.MOUSEBUTTONDOWN:
                             if name.click(pygame.mouse.get_pos()):
                                 result = ""
-                                while True:
+                                while getout:
                                     screen.blit(background,(0,high+1600))
                                     screen.blit(background,(0,high))
                                     screen.blit(background,(0,high-1600))
@@ -189,7 +189,6 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                                         name.text += result
                                 result_name = name.text
                             if ok.click(pygame.mouse.get_pos()):
-                                print("wa 샌즈")
                                 with open("./data.json","r",encoding="utf-8") as f:
                                     dict = json.load(f)
                                 find = True
@@ -202,10 +201,10 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                                 if find:
                                     dict[result_name] = {"easy":0,"normal":0,"hard":0}
                                     dict[result_name][level] = score
-                                    with open("./data.json","w",encoding="utf-8")as f:
-                                        json.dump(dict, f, ensure_ascii=False,indent=4)
-                                    getout = False
-                                    state = 2
+                                with open("./data.json","w",encoding="utf-8")as f:
+                                    json.dump(dict, f, ensure_ascii=False,indent=4)
+                                getout = False
+                                state = 2
                     for obj in objects:
                         obj.draw()
                     player.draw()

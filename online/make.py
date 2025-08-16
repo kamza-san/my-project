@@ -15,6 +15,7 @@ from image import scoreimage,background,player_right,player_left
 objects = []
 
 def receive_messages(sock):
+    global lavaup
     while True:
         try:
             msg = sock.recv(1024).decode()
@@ -23,6 +24,7 @@ def receive_messages(sock):
                 a, b = map(int, coords.split(","))
                 enemy.x = a
                 enemy.y = 550 + score - b
+                lavaup = True
             else:
                 break
         except:
@@ -85,6 +87,8 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global m
     global enemy
     global lava
+    global lavaup
+    lavaup = False
     srv_timer = 0
     enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,screen)
     score = -10
@@ -164,7 +168,8 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 score += a     
                 break
         player.move(pressed_keys,right,left)
-        #lava.up(speed)
+        if lavaup:    
+            lava.up(speed)
         if player.get_rect().colliderect(lava.get_rect()):
             print("닿음;;")
         if len(objects) != 0:
