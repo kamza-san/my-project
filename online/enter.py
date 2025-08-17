@@ -30,7 +30,7 @@ def receive_messages(sock):
         except:
             break
 
-def make(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
+def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     host = "192.168.10.25"
     port = 20002
     
@@ -56,7 +56,7 @@ def make(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
 
     global out
     out = True
-    level = "hard"
+    level = "normal"
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
 
 def player_gravity(a):

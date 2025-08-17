@@ -6,12 +6,12 @@ from image import button,title_photo,button2,setting_button1,setting_button2,qui
 import threading
 
 def title(clock,screen,FPS,MYFONT,level):
-    gamestart = Button(200,300,200,80,button,"offline",MYFONT,0,0,0,screen)
-    gameonline = Button(200,540,200,80,button,"online",MYFONT,0,0,0,screen)
+    gamestart = Button(200,300,200,80,button,"offline mode",MYFONT,0,0,0,screen)
+    gameonline = Button(200,540,200,80,button,"online mode",MYFONT,0,0,0,screen)
     setting = Button(20,700,80,80,setting_button1,"",MYFONT,0,0,0,screen)
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
-    rank = Button(200,660,200,80,button,"rank",MYFONT,0,0,0,screen)
+    rank = Button(200,660,200,80,button,"ranking",MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()

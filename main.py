@@ -5,9 +5,8 @@ from offline.game import game
 from offline.title import title
 from online.online import online
 from offline.level_setting import level_set
-from online.make import make
+from online.enter import enter
 from offline.ranking import ranking
-from online.onlinegame import enter
 
 pygame.init()
 #Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함
@@ -30,11 +29,9 @@ if __name__ == "__main__":
         elif answer == "online":
             answer = online(clock,screen,FPS,MYFONT)
         elif answer == "level_settting":
-            level = level_set(clock,screen,FPS,MYFONT)
+            level = level_set(clock,screen,FPS,MYFONT,level)
             answer = "title"
-        elif answer == "make":
-            answer = make(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
+        elif answer == "enter":
+            answer = enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
         elif answer == "ranking":
             answer = ranking(clock,screen,FPS,MYFONT)
-        elif answer == "enter":
-            answer == enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)

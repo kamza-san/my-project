@@ -1,7 +1,7 @@
 import pygame
 import sys
 from offline.button import Button
-from image import button,title_photo,quit_button1
+from image import button,title_photo,quit_button1,button2,quit_button2
 from offline.textbox import Textbox
 import json
 
@@ -58,4 +58,10 @@ def ranking(clock,screen,FPS,MYFONT):
                         easy.text = "easy:None"
                 elif quit.click(pygame.mouse.get_pos()):
                     return "title"
+        name.image = button
+        quit.image = quit_button1
+        if name.click(pygame.mouse.get_pos()):
+            name.image = button2
+        elif quit.click(pygame.mouse.get_pos()):
+            quit.image = quit_button2
         drawing()

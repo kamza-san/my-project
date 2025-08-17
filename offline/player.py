@@ -14,11 +14,11 @@ class Player:
                 return self.screen.blit(self.image_right,(self.x,self.y))
             return self.screen.blit(self.image_left,(self.x,self.y))
     def move(self,pressed_keys,right,left):
-        if (pressed_keys[K_RIGHT] or pressed_keys[K_d]) and self.x < 540:                
+        if pressed_keys[K_d] and self.x < 540:                
             if right:
                 self.x += 5
                 self.head = 1
-        if (pressed_keys[K_LEFT] or pressed_keys[K_a]) and self.x > 0:
+        if pressed_keys[K_a] and self.x > 0:
             if left:    
                 self.x -= 5
                 self.head = 0

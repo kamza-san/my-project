@@ -11,7 +11,7 @@ from offline.textbox import Textbox
 from . import map
 import json
 from offline.map import objects
-from image import button,wait_ground,scoreimage,background,player_right,player_left
+from image import button,wait_ground,scoreimage,background,player_right,player_left,button2
 
 
 def player_gravity(a):
@@ -55,7 +55,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
     writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
-    scoreboard = Button(40,40,200,80,scoreimage,str(score)+"cm",MYFONT,225,225,107,screen)
+    scoreboard = Button(40,40,200,80,scoreimage,score,MYFONT,153,217,234,screen)
     if_jump = False
     second_jump = False
     high = -800
@@ -89,7 +89,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_k:
+                if event.key == pygame.K_k:
                     if if_jump:
                         jump_speed = 25
                         if_jump = False
@@ -144,6 +144,12 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                         if event.key == pygame.K_r:
                             state = 2
                             getout = False
+                rank.image = button
+                no.image = button
+                if rank.click(pygame.mouse.get_pos()):
+                    rank.image = button2
+                elif no.click(pygame.mouse.get_pos()):
+                    no.image = button2
                 for obj in objects:
                     obj.draw()
                 player.draw()
@@ -156,6 +162,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
             if state == 1:
                 name = Textbox(200,300,200,80,button,"",MYFONT,0,0,0,screen)
                 ok = Button(200,420,200,80,button,"ok",MYFONT,0,0,0,screen)
+                result_name = ""
                 while getout:
                     screen.blit(background,(0,high+1600))
                     screen.blit(background,(0,high))
@@ -189,6 +196,10 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                                         name.text += result
                                 result_name = name.text
                             if ok.click(pygame.mouse.get_pos()):
+                                if result_name == "":
+                                    state = 2
+                                    getout = False
+                                    break
                                 with open("./data.json","r",encoding="utf-8") as f:
                                     dict = json.load(f)
                                 find = True
@@ -205,6 +216,12 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                                     json.dump(dict, f, ensure_ascii=False,indent=4)
                                 getout = False
                                 state = 2
+                    name.image = button
+                    ok.image = button
+                    if name.click(pygame.mouse.get_pos()):
+                        name.image = button2
+                    elif ok.click(pygame.mouse.get_pos()):
+                        ok.image = button2
                     for obj in objects:
                         obj.draw()
                     player.draw()
@@ -235,6 +252,12 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                             if event.key == pygame.K_r:
                                 objects.clear()
                                 return "game"
+                    restart.image = button
+                    menu.image = button
+                    if restart.click(pygame.mouse.get_pos()):
+                        restart.image = button2
+                    elif menu.click(pygame.mouse.get_pos()):
+                        menu.image = button2
                     for obj in objects:
                         obj.draw()
                     player.draw()
@@ -248,7 +271,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         if m >= 0:
             m -= random.randint(120,180)
             map.generate_map(screen, m)
-        scoreboard.text = str(score)+"cm"
+        scoreboard.text = score
         for obj in objects:
             obj.draw()
         player.draw()
