@@ -12,6 +12,7 @@ from . import map
 import json
 from offline.map import objects
 from image import button,wait_ground,scoreimage,background,player_right,player_left,button2
+from pathlib import Path
 
 
 def player_gravity(a):
@@ -34,6 +35,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         speed = -4
     state = 1
     out = False
+    jump_sound = pygame.mixer.Sound(Path(__file__).parent/"eximage"/"jump.mp3")
     while True:
         screen.blit(wait_ground,(0,0))
         for event in pygame.event.get():
@@ -55,7 +57,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
     writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
-    scoreboard = Button(40,40,200,80,scoreimage,score,MYFONT,153,217,234,screen)
+    scoreboard = Button(20,20,200,80,scoreimage,score,MYFONT,153,217,234,screen)
     if_jump = False
     second_jump = False
     high = -800
@@ -94,9 +96,11 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                         jump_speed = 25
                         if_jump = False
                         second_jump = True
+                        jump_sound.play()
                     elif second_jump:
                         jump_speed = 20
                         second_jump = False
+                        jump_sound.play()
                 if event.key == pygame.K_s:
                     jump_speed = -20
         pressed_keys = pygame.key.get_pressed()
