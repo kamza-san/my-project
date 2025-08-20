@@ -35,7 +35,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         speed = -4
     state = 1
     out = False
-    jump_sound = pygame.mixer.Sound(Path(__file__).parent/"eximage"/"jump.mp3")
+    jump_sound = pygame.mixer.Sound("./eximage/jump.mp3")
     while True:
         screen.blit(wait_ground,(0,0))
         for event in pygame.event.get():
@@ -90,7 +90,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:
                     if if_jump:
                         jump_speed = 25
