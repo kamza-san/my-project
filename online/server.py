@@ -8,6 +8,8 @@ def handle_client(client_socket, addr):
     while True:
         try:
             msg = client_socket.recv(1024).decode()
+            if msg == "start":
+                broadcast(f"{"start_game"}", client_socket)
             if not msg:
                 break
             print(f"[{addr}] {msg}")

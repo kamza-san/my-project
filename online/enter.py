@@ -11,7 +11,7 @@ from offline.object import Object
 from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
-from image import scoreimage,background,player_right,player_left
+from image import scoreimage,background,player_right,player_left,button,title_photo
 objects = []
 
 def receive_messages(sock):
@@ -54,9 +54,27 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     receive_thread.daemon = True
     receive_thread.start()
 
-    global out
     out = True
     level = "normal"
+    start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
+    quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
+    while out:    
+        clock.tick(FPS)
+        screen.blit(title_photo,(0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start.click(pygame.mouse.get_pos()):
+                    say("start")
+                    out = False
+                    break
+                elif quit.click(pygame.mouse.get_pos()):
+                    return "online"
+        start.draw()
+        quit.draw()
+        pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
 
 def player_gravity(a):
@@ -171,7 +189,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         if lavaup:    
             lava.up(speed)
         if player.get_rect().colliderect(lava.get_rect()):
-            print("닿음;;")
+            say("lose")
         if len(objects) != 0:
             if lava.y <= objects[0].y:
                 del objects[0]

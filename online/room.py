@@ -3,9 +3,9 @@ import sys
 from offline.button import Button
 from image import button,title_photo
 
-def make(clock,screen,FPS,MYFONT):
+def room(clock,screen,FPS,MYFONT):
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
-    quit = Button(200,660,200,80,button,"quit",MYFONT,0,0,0,screen)
+    quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
     while True:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
@@ -15,10 +15,9 @@ def make(clock,screen,FPS,MYFONT):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start.click(pygame.mouse.get_pos()):
-                    pygame.quit()
-                    sys.exit()
+                    return "start"
                 elif quit.click(pygame.mouse.get_pos()):
-                    return "online"
+                    return "quit"
         start.draw()
         quit.draw()
         pygame.display.update()
