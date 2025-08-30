@@ -28,7 +28,7 @@ def broadcast(msg, sender_socket):
                 pass
 
 def main():
-    host = '0.0.0.0'
+    host = '127.0.0.1'
     port = 5555
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

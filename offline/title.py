@@ -33,13 +33,12 @@ def title(clock,screen,FPS,MYFONT,level):
                 elif gameonline.click(pygame.mouse.get_pos()):
                     return "online"
                 elif setting.click(pygame.mouse.get_pos()):
-                    pygame.quit()
-                    sys.exit()
+                    return "setting"
                 elif gamequit.click(pygame.mouse.get_pos()):
                     pygame.quit()
                     sys.exit()
                 elif level_setting.click(pygame.mouse.get_pos()):
-                    return "level_settting"
+                    return "level_setting"
                 elif rank.click(pygame.mouse.get_pos()):
                     return "ranking"
         gamestart.image = button

@@ -31,23 +31,26 @@ def receive_messages(sock):
 def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
     quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
-    host = "127.0.0.1"
-    port = 5555
+    host = "13.125.10.23"
+    port = 20001
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# 연결 자체는 5초로 제한
+    client.settimeout(5)
     try:
         client.connect((host, port))
-    except TimeoutError:
-        print("서버에 연결할 수 없습니다. (TimeoutError 발생)")
-        pygame.quit()
+    except socket.timeout:
+        print("서버 연결 타임아웃")
         sys.exit()
     except Exception as e:
-        print(f"서버 연결 중 오류가 발생했습니다: {e}")
-        pygame.quit()
+        print("서버 연결 실패:", e)
         sys.exit()
 
-    print("서버에 연결되었습니다.(Ctrl+C로 종료)")
+    # 연결 후에는 recv 대기 무제한 (게임은 실시간이니까)
+    client.settimeout(None)
+    print("서버 연결 성공!")
 
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.daemon = True

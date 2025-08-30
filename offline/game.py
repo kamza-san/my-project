@@ -27,6 +27,13 @@ def player_gravity(a):
     score += a
 
 def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
+    with open("set.json","r") as f:
+        data = f.read()
+        data = data.replace("{","").replace("}","").replace('"',"").split(",")
+        right_num = int(data[0].split(":")[1])
+        left_num = int(data[1].split(":")[1])
+        jump_num = int(data[2].split(":")[1])
+        down_num = int(data[3].split(":")[1])
     if level == "easy":
         speed = -1
     elif level == "normal":
@@ -53,7 +60,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global high
     global m
     score = -10
-    player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,screen)
+    player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
     writing = Button(200,100,200,80,button,"writing...",MYFONT,0,0,0,screen)
@@ -91,7 +98,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_k:
+                if event.key == jump_num:
                     if if_jump:
                         jump_speed = 25
                         if_jump = False
@@ -101,7 +108,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                         jump_speed = 20
                         second_jump = False
                         jump_sound.play()
-                if event.key == pygame.K_s:
+                if event.key == down_num:
                     jump_speed = -20
         pressed_keys = pygame.key.get_pressed()
         player_gravity(jump_speed)
