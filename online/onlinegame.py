@@ -11,7 +11,7 @@ from offline.object import Object
 from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
-from image import scoreimage,background,player_right,player_left
+from image import scoreimage,background,player_right,player_left,button,button2,title_photo
 objects = []
 def receive_messages(sock):
     while True:
@@ -29,12 +29,13 @@ def receive_messages(sock):
 
 
 def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
-    host = "192.168.10.25"
-    port = 20002
+    start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
+    quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
+    host = "127.0.0.1"
+    port = 5555
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
     try:
         client.connect((host, port))
     except TimeoutError:
@@ -52,8 +53,23 @@ def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
     receive_thread.daemon = True
     receive_thread.start()
 
-    global out
     out = True
+    while out:    
+        clock.tick(FPS)
+        screen.blit(title_photo,(0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start.click(pygame.mouse.get_pos()):
+                    out = False
+                    break
+                elif quit.click(pygame.mouse.get_pos()):
+                    return "title"
+        start.draw()
+        quit.draw()
+        pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
 
 def player_gravity(a):
