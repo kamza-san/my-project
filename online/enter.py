@@ -19,11 +19,14 @@ def receive_messages(sock):
     while True:
         try:
             msg = sock.recv(1024).decode()
-            if msg:
-                coords = msg.split("]")[-1].strip()
-                a, b = map(int, coords.split(","))
-                enemy.x = a
-                enemy.y = 550 + score - b
+            print("Received:", msg)
+            coords = msg.split("]")[-1].strip()
+            a, b = map(coords.split(","))
+            if a == "play":
+                print(b)
+            elif msg:
+                enemy.x = int(a)
+                enemy.y = 550 + score - int(b)
                 lavaup = True
             else:
                 break
@@ -31,8 +34,8 @@ def receive_messages(sock):
             break
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
-    host = "192.168.10.25"
-    port = 20002
+    host = "127.0.0.1"
+    port = 5555
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -58,6 +61,7 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     level = "normal"
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
     quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
+    play = Button(200,540,200,80,button,"play",MYFONT,0,0,0,screen)
     while out:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
@@ -67,13 +71,22 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start.click(pygame.mouse.get_pos()):
-                    say("start")
                     out = False
                     break
                 elif quit.click(pygame.mouse.get_pos()):
+                    client.close()
                     return "online"
+                elif play.click(pygame.mouse.get_pos()):
+                    try:
+                        print("trying to play")
+                        client.send("play".encode())
+                    except Exception as e:
+                        print(e)
+                        print("some issue occurred")
+                        pass
         start.draw()
         quit.draw()
+        play.draw()
         pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
 
@@ -99,6 +112,13 @@ def say(player: Player):
         sys.exit()
 
 def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
+    with open("set.json","r") as f:
+        data = f.read()
+        data = data.replace("{","").replace("}","").replace('"',"").split(",")
+        right_num = int(data[0].split(":")[1])
+        left_num = int(data[1].split(":")[1])
+        jump_num = int(data[2].split(":")[1])
+        down_num = int(data[3].split(":")[1])    
     global player
     global score
     global high
@@ -108,7 +128,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global lavaup
     lavaup = False
     srv_timer = 0
-    enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,screen)
+    enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     score = -10
     if level == "easy":
         speed = -1
@@ -117,7 +137,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     else:
         speed = -4
     score = -10
-    player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,screen)
+    player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
     scoreboard = Button(40,40,200,80,scoreimage,str(score)+"cm",MYFONT,225,225,107,screen)
@@ -158,7 +178,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_k:
+                if event.key == jump_num:
                     if if_jump:
                         jump_speed = 25
                         if_jump = False
@@ -166,7 +186,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                     elif second_jump:
                         jump_speed = 20
                         second_jump = False
-                if event.key == pygame.K_s:
+                if event.key == down_num:
                     jump_speed = -20
         pressed_keys = pygame.key.get_pressed()
         player_gravity(jump_speed)

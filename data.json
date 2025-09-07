@@ -1,6 +1,6 @@
 {
     "jisan": {
-        "easy": 1469,
+        "easy": 103013,
         "normal": 32266,
         "hard": 11181
     },
@@ -32,6 +32,11 @@
     "1111": {
         "easy": 0,
         "normal": -11,
+        "hard": 0
+    },
+    "not-s": {
+        "easy": 0,
+        "normal": 10805,
         "hard": 0
     }
 }

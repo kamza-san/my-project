@@ -4,7 +4,6 @@ import threading
 import sys
 import time
 import random
-import socket
 from pygame.locals import *
 from offline.player import Player
 from offline.object import Object
@@ -31,27 +30,29 @@ def receive_messages(sock):
 def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
     quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
-    host = "13.125.10.23"
-    port = 20001
+    
+    host = "127.0.0.1"
+    port = 5555  # 서버와 동일하게
     
     global client
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# 연결 자체는 5초로 제한
-    client.settimeout(5)
+    try:
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    except Exception as e:
+        print("소켓 생성 실패:", e)
+        sys.exit()
+    
+    print("서버에 연결 중...")
     try:
         client.connect((host, port))
-    except socket.timeout:
-        print("서버 연결 타임아웃")
-        sys.exit()
+        print("서버 연결 성공!")
     except Exception as e:
         print("서버 연결 실패:", e)
         sys.exit()
-
-    # 연결 후에는 recv 대기 무제한 (게임은 실시간이니까)
+    
+    # 연결 후에는 recv 무제한 대기
     client.settimeout(None)
-    print("서버 연결 성공!")
 
+    # 메시지 수신 스레드 시작
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.daemon = True
     receive_thread.start()
@@ -73,7 +74,9 @@ def enter(clock, screen, FPS, MAX_WIDTH, MAX_HEIGHT, MYFONT):
         start.draw()
         quit.draw()
         pygame.display.update()
+    
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
+    return "title"
 
 def player_gravity(a):
     for obj in objects:

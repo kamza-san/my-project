@@ -8,7 +8,10 @@ def handle_client(client_socket, addr):
     while True:
         try:
             msg = client_socket.recv(1024).decode()
-            if not msg:
+            print(msg)
+            if msg == "play":
+                answer("play"+","+str(len(clients)), client_socket)
+            elif not msg:
                 break
             print(f"[{addr}] {msg}")
             broadcast(f"{msg}", client_socket)
@@ -27,8 +30,16 @@ def broadcast(msg, sender_socket):
             except:
                 pass
 
+def answer(msg, sender_socket):
+        try:
+            msg = str(msg)
+            sender_socket.send(msg.encode())
+        except Exception as e:
+            print("Error:", e)
+            pass
+
 def main():
-    host = '127.0.0.1'
+    host = '0.0.0.0'
     port = 5555
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
