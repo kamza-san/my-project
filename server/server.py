@@ -2,6 +2,7 @@ import socket
 import threading
 
 clients = []
+start = 0
 
 def handle_client(client_socket, addr):
     print(f"[+] {addr} connected.")
@@ -9,14 +10,23 @@ def handle_client(client_socket, addr):
         try:
             msg = client_socket.recv(1024).decode()
             print(msg)
-            if msg == "play":
-                answer("play"+","+str(len(clients)), client_socket)
+            data = list(msg.split(','))
+            if data[0] == "len":
+                answer("len"+","+str(len(clients)), client_socket)
+            elif data[0] == "move":
+                broadcast(f"{msg}", client_socket)
+            elif data[0] == "play":
+                start += 1
+            elif data[0] == "cancel":
+                start -= 1
             elif not msg:
                 break
             print(f"[{addr}] {msg}")
             broadcast(f"{msg}", client_socket)
         except:
             break
+        if start == 2:
+            broadcast(f"{"start"}", None)
 
     print(f"[-] {addr} disconnected.")
     clients.remove(client_socket)
@@ -40,7 +50,7 @@ def answer(msg, sender_socket):
 
 def main():
     host = '0.0.0.0'
-    port = 5555
+    port = 20001
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))

@@ -19,15 +19,17 @@ def receive_messages(sock):
     while True:
         try:
             msg = sock.recv(1024).decode()
-            print("Received:", msg)
-            coords = msg.split("]")[-1].strip()
-            a, b = map(coords.split(","))
-            if a == "play":
-                print(b)
-            elif msg:
-                enemy.x = int(a)
-                enemy.y = 550 + score - int(b)
-                lavaup = True
+            data = msg.split("]")[-1].strip()
+            data = list(data.split(','))
+            if data[0] == "len":
+                pass
+            elif data[0] == "move":
+                global score
+                enemy.x = data[1]
+                enemy.y = 550 + score - data[2]
+            elif data[0] == "start":
+                global out
+                out = False
             else:
                 break
         except:
@@ -35,7 +37,7 @@ def receive_messages(sock):
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     host = "127.0.0.1"
-    port = 5555
+    port = 20001
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,12 +58,13 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     receive_thread = threading.Thread(target=receive_messages, args=(client,))
     receive_thread.daemon = True
     receive_thread.start()
-
+    
+    global out
     out = True
     level = "normal"
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
     quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
-    play = Button(200,540,200,80,button,"play",MYFONT,0,0,0,screen)
+    play = Button(200,540,200,80,button,"Nothing",MYFONT,0,0,0,screen)
     while out:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
@@ -71,19 +74,27 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start.click(pygame.mouse.get_pos()):
-                    out = False
-                    break
+                    if start.text == "start":
+                        try:
+                            client.send("start".encode())
+                        except KeyboardInterrupt:
+                            print("\n[!] 클라이언트를 종료합니다.")
+                            client.close()
+                            pygame.quit()
+                            sys.exit()
+                        start.text = "cancel"
+                    elif start.text == "cancel":
+                        try:
+                            client.send("cancel".encode())
+                        except KeyboardInterrupt:
+                            print("\n[!] 클라이언트를 종료합니다.")
+                            client.close()
+                            pygame.quit()
+                            sys.exit()
+                        start.text = "start"
                 elif quit.click(pygame.mouse.get_pos()):
                     client.close()
                     return "online"
-                elif play.click(pygame.mouse.get_pos()):
-                    try:
-                        print("trying to play")
-                        client.send("play".encode())
-                    except Exception as e:
-                        print(e)
-                        print("some issue occurred")
-                        pass
         start.draw()
         quit.draw()
         play.draw()
@@ -101,15 +112,18 @@ def player_gravity(a):
     m += a
     score += a
 
-def say(player: Player):
-    msg = str(player.x)+","+str(score)
-    try:
-        client.send(msg.encode())
-    except KeyboardInterrupt:
-        print("\n[!] 클라이언트를 종료합니다.")
-        client.close()
-        pygame.quit()
-        sys.exit()
+def say(type_):
+    if type_ == "move":
+        global player
+        global score
+        msg = str(player.x)+","+str(score)
+        try:
+            client.send(msg.encode())
+        except KeyboardInterrupt:
+            print("\n[!] 클라이언트를 종료합니다.")
+            client.close()
+            pygame.quit()
+            sys.exit()
 
 def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     with open("set.json","r") as f:
@@ -149,7 +163,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     while True:
         srv_timer += 1
         if srv_timer >= 3:
-            say(player)
+            say("move")
             srv_timer = 0
         right = True
         left = True
@@ -219,7 +233,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
             width = 100
             height = 40
             objects.append(Object(x,m,width,height,255,255,0,screen))
-        scoreboard.text = str(score)+"cm"
+        scoreboard.text = str(score)+"m"
         for obj in objects:
             obj.draw()
         enemy.draw()
