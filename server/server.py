@@ -5,6 +5,7 @@ clients = []
 start = 0
 
 def handle_client(client_socket, addr):
+    global start
     print(f"[+] {addr} connected.")
     while True:
         try:

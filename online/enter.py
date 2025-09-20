@@ -19,6 +19,7 @@ def receive_messages(sock):
     while True:
         try:
             msg = sock.recv(1024).decode()
+            print(msg)
             data = msg.split("]")[-1].strip()
             data = list(data.split(','))
             if data[0] == "len":
@@ -28,6 +29,7 @@ def receive_messages(sock):
                 enemy.x = data[1]
                 enemy.y = 550 + score - data[2]
             elif data[0] == "start":
+                print("받음")
                 global out
                 out = False
             else:
