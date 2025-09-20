@@ -1,3 +1,1 @@
-data = "yogu"
-data = list(data.split(','))
-print(data)
+#뭐가 문제야ㅆ

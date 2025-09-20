@@ -19,9 +19,10 @@ def receive_messages(sock):
     while True:
         try:
             msg = sock.recv(1024).decode()
-            print(msg)
+            print("[MSG]", msg)
             data = msg.split("]")[-1].strip()
             data = list(data.split(','))
+            print("[DATA]", data)
             if data[0] == "len":
                 pass
             elif data[0] == "move":
@@ -32,10 +33,8 @@ def receive_messages(sock):
                 print("받음")
                 global out
                 out = False
-            else:
-                break
         except:
-            break
+            print("ISSUE")
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     host = "127.0.0.1"
@@ -78,7 +77,7 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
                 if start.click(pygame.mouse.get_pos()):
                     if start.text == "start":
                         try:
-                            client.send("start".encode())
+                            client.send("play".encode())
                         except KeyboardInterrupt:
                             print("\n[!] 클라이언트를 종료합니다.")
                             client.close()
@@ -87,9 +86,12 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
                         start.text = "cancel"
                     elif start.text == "cancel":
                         try:
+                            print("cancel game")
                             client.send("cancel".encode())
+                            print("cancel game")
                         except KeyboardInterrupt:
                             print("\n[!] 클라이언트를 종료합니다.")
+                            print("client QUIT!")
                             client.close()
                             pygame.quit()
                             sys.exit()
@@ -134,7 +136,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
         right_num = int(data[0].split(":")[1])
         left_num = int(data[1].split(":")[1])
         jump_num = int(data[2].split(":")[1])
-        down_num = int(data[3].split(":")[1])    
+        down_num = int(data[3].split(":")[1])  
     global player
     global score
     global high
@@ -156,7 +158,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
     lava = Object(0,800,600,800,255,127,0,screen)
-    scoreboard = Button(40,40,200,80,scoreimage,str(score)+"cm",MYFONT,225,225,107,screen)
+    scoreboard = Button(40,40,200,80,scoreimage,str(score)+"m",MYFONT,225,225,107,screen)
     if_jump = False
     second_jump = False
     high = -800

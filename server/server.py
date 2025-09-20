@@ -20,15 +20,14 @@ def handle_client(client_socket, addr):
                 start += 1
             elif data[0] == "cancel":
                 start -= 1
-            elif not msg:
-                break
             print(f"[{addr}] {msg}")
             broadcast(f"{msg}", client_socket)
         except:
             break
         if start == 2:
-            broadcast(f"{"start"}", None)
-
+            print("ANSWER START")
+            answer("start")
+            
     print(f"[-] {addr} disconnected.")
     clients.remove(client_socket)
     client_socket.close()
@@ -41,13 +40,15 @@ def broadcast(msg, sender_socket):
             except:
                 pass
 
-def answer(msg, sender_socket):
+
+def answer(msg):
+    print(clients)
+    for client in clients[:]:
         try:
-            msg = str(msg)
-            sender_socket.send(msg.encode())
+            client.send(msg.encode())
         except Exception as e:
-            print("Error:", e)
-            pass
+            print(f"[ERROR] send failed to {client.getpeername()}: {e}")
+            clients.remove(client)
 
 def main():
     host = '0.0.0.0'
@@ -62,6 +63,7 @@ def main():
     while True:
         client_socket, addr = server.accept()
         clients.append(client_socket)
+
         thread = threading.Thread(target=handle_client, args=(client_socket, addr))
         thread.start()
 
