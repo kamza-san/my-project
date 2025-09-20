@@ -11,7 +11,7 @@ from offline.set import setting
 
 pygame.init()
 pygame.mixer.init()
-#Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함
+#Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함ㅇㅇ
 bgm = pygame.mixer.Sound("./eximage/bgm2.mp3")
 bgm.set_volume(0.5)
 bgm.play(-1)
