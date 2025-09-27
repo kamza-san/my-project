@@ -1,5 +1,6 @@
 import socket
 import threading
+import random
 
 clients = []
 start = 0
@@ -20,13 +21,30 @@ def handle_client(client_socket, addr):
                 start += 1
             elif data[0] == "cancel":
                 start -= 1
-            print(f"[{addr}] {msg}")
-            broadcast(f"{msg}", client_socket)
+            elif data[0] == "win":
+                broadcast(f"{msg}", client_socket)
+            else:
+                print(f"[{addr}] {msg}")
+                broadcast(f"{msg}", client_socket)                
+
         except:
             break
         if start == 2:
             print("ANSWER START")
+            objs = []
+            y = 600
+            for i in range(100):
+                x = random.randint(12,88)*5
+                objs.append(x)
+                y -= random.randint(120,180)
+                objs.append(y)
+            text = "obj"
+            for i in range(200):
+                text += ","+str(objs[i])
+            print(text)
+            answer(text)
             answer("start")
+            start = 0
             
     print(f"[-] {addr} disconnected.")
     clients.remove(client_socket)

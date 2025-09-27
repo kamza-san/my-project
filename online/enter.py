@@ -12,10 +12,10 @@ from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
 from image import scoreimage,background,player_right,player_left,button,title_photo
-objects = []
 
 def receive_messages(sock):
-    global lavaup
+    global game_overing
+    global map_data
     while True:
         try:
             msg = sock.recv(1024).decode()
@@ -27,12 +27,16 @@ def receive_messages(sock):
                 pass
             elif data[0] == "move":
                 global score
-                enemy.x = data[1]
-                enemy.y = 550 + score - data[2]
+                enemy.x = int(data[1])
+                enemy.y = 550 + score - int(data[2])
             elif data[0] == "start":
                 print("받음")
                 global out
                 out = False
+            elif data[0] == "win":
+                game_overing = "lose"
+            elif data[0] == "obj":
+                map_data = data
         except:
             print("ISSUE")
 
@@ -104,23 +108,22 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
         play.draw()
         pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
+    client.close()
+    return "online"
 
 def player_gravity(a):
     for obj in objects:
         obj.up(a)
-    lava.up(a)
     global high
-    global m
     global score
     high += a
-    m += a
     score += a
 
 def say(type_):
     if type_ == "move":
         global player
         global score
-        msg = str(player.x)+","+str(score)
+        msg = "move"+","+str(player.x)+","+str(score)
         try:
             client.send(msg.encode())
         except KeyboardInterrupt:
@@ -128,8 +131,45 @@ def say(type_):
             client.close()
             pygame.quit()
             sys.exit()
+            
+def map_gen(objs,screen):
+    for i in range(100):
+        objects.append(Object(int(objs[1+i*2]), int(objs[2+i*2]), 100, 40, 255,255,0,screen))
+            
+def game_over(fight,MYFONT,screen):
+    if fight == "":
+        return ""
+    win_lose = Button(200,300,200,80,button,"",MYFONT,0,0,0,screen)
+    ok = Button(200,420,200,80,button,"ok",MYFONT,0,0,0,screen)
+    if fight == "win":
+       win_lose.text = "win"
+    else:
+        win_lose.text = "lose"
+    while True:
+        screen.blit(background,(0,high+1600))
+        screen.blit(background,(0,high))
+        screen.blit(background,(0,high-1600))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if ok.click(pygame.mouse.get_pos()):
+                    return "online"
+        for obj in objects:
+            obj.draw()
+        enemy.draw()
+        player.draw()
+        scoreboard.draw()
+        win_lose.draw()
+        ok.draw()
+        pygame.display.update()
+                            
 
 def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
+    global objects
+    objects = []
+    map_gen(map_data,screen)
     with open("set.json","r") as f:
         data = f.read()
         data = data.replace("{","").replace("}","").replace('"',"").split(",")
@@ -140,14 +180,12 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     global player
     global score
     global high
-    global m
     global enemy
-    global lava
-    global lavaup
-    lavaup = False
+    global game_overing
+    global scoreboard
+    game_overing = ""
     srv_timer = 0
     enemy = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
-    score = -10
     if level == "easy":
         speed = -1
     elif level == "normal":
@@ -157,12 +195,10 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
     score = -10
     player = Player(MAX_WIDTH//2-30,MAX_HEIGHT-250,1,player_right,player_left,right_num,left_num,screen)
     objects.append(Object(0, 600, 600, 300, 255,255,0,screen))
-    lava = Object(0,800,600,800,255,127,0,screen)
-    scoreboard = Button(40,40,200,80,scoreimage,str(score)+"m",MYFONT,225,225,107,screen)
+    scoreboard = Button(40,40,200,80,scoreimage,str(score)+"m",MYFONT,153,217,234,screen)
     if_jump = False
     second_jump = False
     high = -800
-    m = 600
     jump_speed = 5
     while True:
         srv_timer += 1
@@ -186,9 +222,7 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 a = player.y - obj.y + 60
                 for obj in objects:
                     obj.up(a)
-                lava.up(a)
                 high += a
-                m += a
                 score += a
                 break
         for event in pygame.event.get():
@@ -218,30 +252,22 @@ def game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level):
                 a = player.y - obj.y - obj.si_y
                 for obj in objects:
                     obj.up(a)
-                lava.up(a)
                 high += a
-                m += a
                 score += a     
                 break
         player.move(pressed_keys,right,left)
-        if lavaup:    
-            lava.up(speed)
-        if player.get_rect().colliderect(lava.get_rect()):
-            say("lose")
-        if len(objects) != 0:
-            if lava.y <= objects[0].y:
-                del objects[0]
-        if m >= 0:
-            m -= 180
-            x = 0
-            width = 100
-            height = 40
-            objects.append(Object(x,m,width,height,255,255,0,screen))
+        if score >= 10000:
+            client.send("win".encode())
+            game_overing = "win"
+        result = game_over(game_overing,MYFONT,screen)
+        if result == "":
+            pass
+        else:
+            return
         scoreboard.text = str(score)+"m"
         for obj in objects:
             obj.draw()
         enemy.draw()
         player.draw()
-        lava.draw()
         scoreboard.draw()
         pygame.display.update()
