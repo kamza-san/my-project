@@ -11,7 +11,7 @@ from offline.object import Object
 from offline.button import Button
 from offline.map import generate_map,touch,touch_side,touch_near
 import json
-from image import scoreimage,background,player_right,player_left,button,title_photo
+from image import scoreimage,background,player_right,player_left,button,title_photo,button2
 
 def receive_messages(sock):
     global game_overing
@@ -38,10 +38,10 @@ def receive_messages(sock):
             elif data[0] == "obj":
                 map_data = data
         except:
-            print("ISSUE")
+            pass
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
-    host = "127.0.0.1"
+    host = "192.168.10.70"
     port = 20001
     
     global client
@@ -69,7 +69,6 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
     level = "normal"
     start = Button(200,300,200,80,button,"start",MYFONT,0,0,0,screen)
     quit = Button(200,420,200,80,button,"quit",MYFONT,0,0,0,screen)
-    play = Button(200,540,200,80,button,"Nothing",MYFONT,0,0,0,screen)
     while out:    
         clock.tick(FPS)
         screen.blit(title_photo,(0,0))
@@ -103,9 +102,14 @@ def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
                 elif quit.click(pygame.mouse.get_pos()):
                     client.close()
                     return "online"
+        start.image = button
+        quit.image = button
+        if start.click(pygame.mouse.get_pos()):
+            start.image = button2
+        elif quit.click(pygame.mouse.get_pos()):
+            quit.image = button2
         start.draw()
         quit.draw()
-        play.draw()
         pygame.display.update()
     game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
     client.close()

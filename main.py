@@ -18,7 +18,7 @@ bgm.play(-1)
 FPS = 60
 MAX_WIDTH = 600
 MAX_HEIGHT = 800
-MYFONT = pygame.font.SysFont(None, 40)
+MYFONT = pygame.font.SysFont('malgungothic', 25)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((MAX_WIDTH,MAX_HEIGHT))

@@ -1,6 +1,7 @@
 import socket
 import threading
 import random
+import time
 
 clients = []
 start = 0
@@ -43,6 +44,7 @@ def handle_client(client_socket, addr):
                 text += ","+str(objs[i])
             print(text)
             answer(text)
+            time.sleep(0.1)
             answer("start")
             start = 0
             
@@ -60,9 +62,11 @@ def broadcast(msg, sender_socket):
 
 
 def answer(msg):
-    print(clients)
     for client in clients[:]:
         try:
+            print("ANSWER==================================")
+            print(msg)
+            print("ANSWER_END==============================")
             client.send(msg.encode())
         except Exception as e:
             print(f"[ERROR] send failed to {client.getpeername()}: {e}")

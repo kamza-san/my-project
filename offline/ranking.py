@@ -7,7 +7,7 @@ import json
 
 
 def ranking(clock,screen,FPS,MYFONT):
-    MYFONT1 = pygame.font.SysFont(None, 30)
+    MYFONT1 = pygame.font.SysFont('malgungothic', 20)
     name = Textbox(200,300,200,80,button,"",MYFONT,0,0,0,screen)
     hard = Button(200,420,200,80,button,"hard:0",MYFONT1,0,0,0,screen)
     normal = Button(200,540,200,80,button,"normal:0",MYFONT1,0,0,0,screen)

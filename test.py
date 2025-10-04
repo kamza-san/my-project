@@ -1,1 +1,3 @@
-#뭐가 문제야ㅆ
+import pygame
+
+print(pygame.font.get_fonts())

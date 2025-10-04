@@ -12,6 +12,7 @@ def title(clock,screen,FPS,MYFONT,level):
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
     rank = Button(200,660,200,80,button,"ranking",MYFONT,0,0,0,screen)
+    hangul = Button(300,180,200,80,button,"한글을 쓸수있다!",MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()
@@ -19,6 +20,7 @@ def title(clock,screen,FPS,MYFONT,level):
         gamequit.draw()
         level_setting.draw()
         rank.draw()
+        hangul.draw()
         pygame.display.update()
     while True:    
         clock.tick(FPS)
