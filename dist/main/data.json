@@ -1,0 +1,42 @@
+{
+    "jisan": {
+        "easy": 103013,
+        "normal": 32266,
+        "hard": 11181
+    },
+    "potato": {
+        "easy": 20000,
+        "normal": 5000,
+        "hard": 13000
+    },
+    "newbie": {
+        "easy": 0,
+        "normal": 0,
+        "hard": 0
+    },
+    "maker": {
+        "easy": 51179,
+        "normal": 13674,
+        "hard": 9964
+    },
+    "cho": {
+        "easy": 1257,
+        "normal": 0,
+        "hard": 0
+    },
+    "under": {
+        "easy": 0,
+        "normal": 0,
+        "hard": -20
+    },
+    "1111": {
+        "easy": 0,
+        "normal": -11,
+        "hard": 0
+    },
+    "not-s": {
+        "easy": 0,
+        "normal": 10805,
+        "hard": 0
+    }
+}

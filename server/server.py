@@ -72,9 +72,8 @@ def answer(msg):
             print(f"[ERROR] send failed to {client.getpeername()}: {e}")
             clients.remove(client)
 
-def main():
+def child_server(port):
     host = '0.0.0.0'
-    port = 20001
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
@@ -90,4 +89,4 @@ def main():
         thread.start()
 
 if __name__ == "__main__":
-    main()
+    child_server()

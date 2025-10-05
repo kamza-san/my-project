@@ -41,7 +41,7 @@ def receive_messages(sock):
             pass
 
 def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
-    host = "192.168.10.70"
+    host = "54.180.80.228"
     port = 20001
     
     global client

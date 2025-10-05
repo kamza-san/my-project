@@ -1,5 +1,7 @@
 import pygame
 import sys
+import os
+sys.path.append(os.path.dirname(__file__))
 from pygame.locals import *
 from offline.game import game
 from offline.title import title
@@ -12,7 +14,7 @@ from offline.set import setting
 pygame.init()
 pygame.mixer.init()
 #Object 만들때 무조건 가로와 가로위치를 5의 배수로 만들어야함ㅇㅇ
-bgm = pygame.mixer.Sound("./eximage/bgm2.mp3")
+bgm = pygame.mixer.Sound("./eximage/bgm2.mp3")    
 bgm.set_volume(0.5)
 bgm.play(-1)
 FPS = 60

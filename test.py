@@ -1,3 +1,1 @@
-import pygame
-
-print(pygame.font.get_fonts())
+#이전에 썼는데 지금은 안씀
