@@ -42,6 +42,7 @@ def main_server():
 
     print(f"[+] Server listening on {host}:{port}")
 
+    user_port = 20001
     while True:
         client_socket, addr = server.accept()
         clients.append(client_socket)
@@ -49,8 +50,9 @@ def main_server():
         thread = threading.Thread(target=handle_client, args=(client_socket, addr))
         thread.start()
         if len(clients) >= 2:
-            clients[0]
-            clients[1]
+            answer(user_port,clients[0])
+            answer(user_port,clients[1])
+            user_port += 1
 
 if __name__ == "__main__":
-    child_server()
+    main_server()

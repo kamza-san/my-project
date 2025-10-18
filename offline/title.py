@@ -1,9 +1,11 @@
 import pygame
 import sys
+import random
 from offline.button import Button
 from offline.textbox import Textbox
-from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2
+from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,tip
 import threading
+tips = ["s키 누르면 빨리 내려감","hard가 재밌음","더블점프가능","normal 1만점이 튜토리얼"]
 
 def title(clock,screen,FPS,MYFONT,level):
     gamestart = Button(200,300,200,80,button,"offline mode",MYFONT,0,0,0,screen)
@@ -12,7 +14,7 @@ def title(clock,screen,FPS,MYFONT,level):
     gamequit = Button(500,20,80,80,quit_button1,"",MYFONT,0,0,0,screen)
     level_setting = Button(200,420,200,80,button,level,MYFONT,0,0,0,screen)
     rank = Button(200,660,200,80,button,"ranking",MYFONT,0,0,0,screen)
-    hangul = Button(300,180,200,80,button,"한글을 쓸수있다!",MYFONT,0,0,0,screen)
+    hangul = Button(300,200,240,80,tip,"tip : %s" %tips[random.randint(0,3)],MYFONT,0,0,0,screen)
     def drawing():
         gamestart.draw()
         gameonline.draw()
