@@ -5,7 +5,6 @@ import time
 
 clients = []
 severs = []
-playing = []
 
 def handle_client(client_socket, addr):
     global start
@@ -52,19 +51,10 @@ def main_server():
         thread = threading.Thread(target=handle_client, args=(client_socket, addr))
         thread.start()
         if len(clients) >= 2:
-            find = False
-            for play in range(len(playing)):
-                if not playing[play]:
-                    answer(20000+play,clients[0])
-                    answer(20000+play,clients[1])
-                    find = True
-                    break
-            if not find:
-                answer(user_port,clients[0])
-                answer(user_port,clients[1])
-                user_port += 1
-                severs.append(threading.Thread(target=server_son, args=(client_socket, addr)))
-                playing.append(True)
+            answer(user_port,clients[0])
+            answer(user_port,clients[1])
+            severs.append(threading.Thread(target=server_son, args=(user_port)))
+            user_port += 1
 
 if __name__ == "__main__":
     main_server()

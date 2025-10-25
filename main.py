@@ -10,6 +10,7 @@ from offline.level_setting import level_set
 from online.enter import enter
 from offline.ranking import ranking
 from offline.set import setting
+from online.matching import matching
 
 pygame.init()
 pygame.mixer.init()
@@ -24,6 +25,7 @@ MYFONT = pygame.font.SysFont('malgungothic', 25)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((MAX_WIDTH,MAX_HEIGHT))
+using_port = 20000
 answer = "title"
 if __name__ == "__main__":
     level = "normal"
@@ -38,8 +40,15 @@ if __name__ == "__main__":
             level = level_set(clock,screen,FPS,MYFONT,level)
             answer = "title"
         elif answer == "enter":
-            answer = enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT)
+            answer = enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,"54.180.99.229",using_port)
         elif answer == "ranking":
             answer = ranking(clock,screen,FPS,MYFONT)
         elif answer == "setting":
             answer = setting(clock,screen,FPS,MYFONT)
+        elif answer == "matching":
+            n = matching(clock,screen,FPS,MYFONT)
+            if n == "online":
+                answer = "online"
+            else:
+                using_port = int(n)
+                answer = "enter"

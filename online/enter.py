@@ -23,14 +23,11 @@ def receive_messages(sock):
             data = msg.split("]")[-1].strip()
             data = list(data.split(','))
             print("[DATA]", data)
-            if data[0] == "len":
-                pass
-            elif data[0] == "move":
+            if data[0] == "move":
                 global score
                 enemy.x = int(data[1])
                 enemy.y = 550 + score - int(data[2])
             elif data[0] == "start":
-                print("받음")
                 global out
                 out = False
             elif data[0] == "win":
@@ -40,9 +37,7 @@ def receive_messages(sock):
         except:
             pass
 
-def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT):
-    host = "54.180.80.228"
-    port = 20001
+def enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,host,port):
     
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
