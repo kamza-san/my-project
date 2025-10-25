@@ -5,7 +5,7 @@ from offline.button import Button
 from offline.textbox import Textbox
 from image import button,title_photo,button2,setting_button1,setting_button2,quit_button1,quit_button2,tip
 import threading
-tips = ["s키 누르면 빨리 내려감","ranking에서 랭킹 검색가능","더블 점프가능","setting에서 키 세팅 변경가능"]
+tips = ["s키 누르면 빨리 내려감","ranking에서 랭킹 검색가능","더블 점프가능","설정에서 키 세팅 변경가능"]
 
 def title(clock,screen,FPS,MYFONT,level):
     gamestart = Button(200,300,200,80,button,"offline mode",MYFONT,0,0,0,screen)

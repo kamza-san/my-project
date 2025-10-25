@@ -57,8 +57,6 @@ def main_server():
                 if not playing[play]:
                     answer(20000+play,clients[0])
                     answer(20000+play,clients[1])
-                    clients[0].close()
-                    clients[1].close()
                     find = True
                     break
             if not find:
@@ -67,8 +65,6 @@ def main_server():
                 user_port += 1
                 severs.append(threading.Thread(target=server_son, args=(client_socket, addr)))
                 playing.append(True)
-                clients[0].close()
-                clients[1].close()
 
 if __name__ == "__main__":
     main_server()

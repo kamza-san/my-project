@@ -8,11 +8,9 @@ start = 0
 
 def handle_client(client_socket, addr):
     global start
-    print(f"[+] {addr} connected.")
     while True:
         try:
             msg = client_socket.recv(1024).decode()
-            print(msg)
             data = list(msg.split(','))
             if data[0] == "len":
                 answer("len"+","+str(len(clients)), client_socket)
@@ -25,13 +23,11 @@ def handle_client(client_socket, addr):
             elif data[0] == "win":
                 broadcast(f"{msg}", client_socket)
             else:
-                print(f"[{addr}] {msg}")
                 broadcast(f"{msg}", client_socket)                
 
         except:
             break
         if start == 2:
-            print("ANSWER START")
             objs = []
             y = 600
             for i in range(100):
@@ -42,13 +38,11 @@ def handle_client(client_socket, addr):
             text = "obj"
             for i in range(200):
                 text += ","+str(objs[i])
-            print(text)
             answer(text)
             time.sleep(0.1)
             answer("start")
             start = 0
             
-    print(f"[-] {addr} disconnected.")
     clients.remove(client_socket)
     client_socket.close()
 
@@ -64,9 +58,6 @@ def broadcast(msg, sender_socket):
 def answer(msg):
     for client in clients[:]:
         try:
-            print("ANSWER==================================")
-            print(msg)
-            print("ANSWER_END==============================")
             client.send(msg.encode())
         except Exception as e:
             print(f"[ERROR] send failed to {client.getpeername()}: {e}")
@@ -79,7 +70,6 @@ def server_son(port):
     server.bind((host, port))
     server.listen(5)
 
-    print(f"[+] Server listening on {host}:{port}")
 
     while True:
         client_socket, addr = server.accept()
