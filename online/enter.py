@@ -19,10 +19,8 @@ def receive_messages(sock):
     while True:
         try:
             msg = sock.recv(1024).decode()
-            print("[MSG]", msg)
             data = msg.split("]")[-1].strip()
             data = list(data.split(','))
-            print("[DATA]", data)
             if data[0] == "move":
                 global score
                 enemy.x = int(data[1])
