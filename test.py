@@ -1,1 +1,3 @@
-#이전에 썼는데 지금은 안씀
+ttt = []
+if type([]) == type(ttt):
+    print("wow")

@@ -20,7 +20,7 @@ def online(clock,screen,FPS,MYFONT):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if gameenter.click(pygame.mouse.get_pos()):
-                    return "enter"
+                    return [host.text,int(port.text)]
                 elif quit.click(pygame.mouse.get_pos()):
                     return "title"
                 elif host.click(pygame.mouse.get_pos()):

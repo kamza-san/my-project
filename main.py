@@ -25,6 +25,7 @@ MYFONT = pygame.font.SysFont('malgungothic', 25)
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((MAX_WIDTH,MAX_HEIGHT))
+using_host = "0.0.0.0"
 using_port = 20000
 answer = "title"
 if __name__ == "__main__":
@@ -35,12 +36,17 @@ if __name__ == "__main__":
         elif answer == "game":
             answer = game(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,level)
         elif answer == "online":
-            answer = online(clock,screen,FPS,MYFONT)
+            n = online(clock,screen,FPS,MYFONT)
+            if type([]) == type(n):
+                using_host = n[0]
+                using_port = n[1]
+            else:
+                answer = n
         elif answer == "level_setting":
             level = level_set(clock,screen,FPS,MYFONT,level)
             answer = "title"
         elif answer == "enter":
-            answer = enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,"54.180.99.229",using_port)
+            answer = enter(clock,screen,FPS,MAX_WIDTH,MAX_HEIGHT,MYFONT,using_host,using_port)
         elif answer == "ranking":
             answer = ranking(clock,screen,FPS,MYFONT)
         elif answer == "setting":
@@ -50,6 +56,6 @@ if __name__ == "__main__":
             if n == "online":
                 answer = "online"
             else:
+                using_host = "54.180.99.229"
                 using_port = int(n)
                 answer = "enter"
-                print("성공")
