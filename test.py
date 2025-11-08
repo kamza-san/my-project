@@ -1,3 +1,2 @@
-ttt = []
-if type([]) == type(ttt):
-    print("wow")
+def f(x):
+    return x + 1
