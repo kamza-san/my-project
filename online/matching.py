@@ -5,7 +5,6 @@ from offline.button import Button
 from offline.textbox import Textbox
 from image import button,title_photo,quit_button1,button2,quit_button2
 import socket
-import socket
 from pygame.locals import *
 from offline.map import generate_map,touch,touch_side,touch_near
 from online.enter import enter
